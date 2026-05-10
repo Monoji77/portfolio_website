@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 195" role="img" aria-label="back leg">
+  <defs>
+    <linearGradient id="backleg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#cfb088"/>
+      <stop offset="70%" stop-color="#85694d"/>
+      <stop offset="100%" stop-color="#443225"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#backleg)" stroke="#2d241d" stroke-width="5" stroke-linejoin="round"
+        d="M34 18 C59 7 83 20 88 47
+           C96 87 92 125 82 151
+           C75 170 59 179 39 173
+           C20 166 15 146 22 126
+           C32 97 34 63 31 39
+           C30 29 30 21 34 18 Z"/>
+  <path fill="#3a2b22" stroke="#2d241d" stroke-width="4"
+        d="M20 153 C38 142 73 143 92 158
+           C95 178 77 188 49 187
+           C25 186 12 174 20 153 Z"/>
+  <path d="M40 58 C55 72 70 74 86 70 M35 108 C50 121 66 125 86 119"
+        stroke="#4e3a2c" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+</svg>

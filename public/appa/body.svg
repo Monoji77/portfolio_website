@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" role="img" aria-label="original sky-bison-inspired body">
+  <defs>
+    <linearGradient id="fur" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f5ead4"/>
+      <stop offset="60%" stop-color="#e3d1ad"/>
+      <stop offset="100%" stop-color="#c7aa84"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#3d2d20" flood-opacity=".23"/>
+    </filter>
+  </defs>
+
+  <!-- large rounded body -->
+  <path filter="url(#softShadow)" fill="url(#fur)" stroke="#2d241d" stroke-width="5" stroke-linejoin="round"
+        d="M118 176 C112 91 183 38 314 36 C455 34 552 96 578 191
+           C598 262 543 306 427 310 L230 310
+           C158 306 124 267 118 176 Z"/>
+
+  <!-- chest/head mass, separate from exact reference but usable as main body layer -->
+  <path fill="#dfccab" stroke="#2d241d" stroke-width="4" stroke-linejoin="round"
+        d="M92 154 C90 98 137 62 207 70 C268 78 301 120 291 180
+           C281 244 227 279 158 263 C114 246 92 207 92 154 Z"/>
+
+  <!-- shaggy forehead/fringe -->
+  <path fill="#f9f0de" stroke="#2d241d" stroke-width="4" stroke-linejoin="round"
+        d="M92 126 C122 82 178 63 240 79
+           C229 93 238 111 216 119
+           C199 126 198 106 181 122
+           C166 136 158 115 143 132
+           C128 148 113 130 97 151 Z"/>
+
+  <!-- muzzle -->
+  <path fill="#574535" stroke="#2d241d" stroke-width="4"
+        d="M103 190 C114 169 160 160 207 170
+           C235 176 240 205 219 223
+           C188 249 126 236 105 214
+           C99 207 98 198 103 190 Z"/>
+  <ellipse cx="168" cy="192" rx="56" ry="20" fill="#2c2927" opacity=".88"/>
+
+  <!-- body stripes -->
+  <path fill="#8c6b4e" opacity=".58" d="M328 60 C349 113 355 224 341 306 L306 306 C323 207 318 121 291 65 Z"/>
+  <path fill="#8c6b4e" opacity=".45" d="M444 81 C464 145 466 235 455 307 L420 309 C436 218 430 145 405 79 Z"/>
+  <path fill="#8c6b4e" opacity=".38" d="M527 139 C548 192 551 252 535 292 C521 299 506 303 489 306 C512 232 507 179 480 119 Z"/>
+
+  <!-- original forehead marking, intentionally not an exact replica -->
+  <path fill="#9f7a5c" opacity=".85"
+        d="M170 73 L227 143 L196 139 L203 198 L168 198 L174 140 L143 144 Z"/>
+
+  <!-- eye -->
+  <ellipse cx="130" cy="172" rx="11" ry="8" fill="#1f1b18"/>
+  <circle cx="126" cy="169" r="2.5" fill="#fff" opacity=".8"/>
+
+  <!-- small fur cuts -->
+  <path d="M112 149 l-12 18 M136 137 l-10 18 M161 130 l-8 21 M188 128 l-4 18
+           M244 235 l-15 21 M274 245 l-9 24 M383 247 l-9 28 M520 234 l-8 31"
+        stroke="#2d241d" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+</svg>

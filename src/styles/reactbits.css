@@ -1,0 +1,123 @@
+.rb-spotlight-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01)),
+    rgba(20, 20, 32, 0.9);
+  --rb-mouse-x: 50%;
+  --rb-mouse-y: 50%;
+  --rb-spotlight-color: rgba(128, 245, 194, 0.16);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.rb-spotlight-card:hover,
+.rb-spotlight-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(128, 245, 194, 0.22);
+  box-shadow: var(--shadow-soft);
+}
+
+.rb-spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--rb-mouse-x) var(--rb-mouse-y), var(--rb-spotlight-color), transparent 70%);
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.rb-spotlight-card:hover::before,
+.rb-spotlight-card:focus-within::before {
+  opacity: 0.88;
+}
+
+.rb-animated-list {
+  position: relative;
+  width: 100%;
+}
+
+.rb-animated-list__scroll {
+  max-height: 24rem;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.rb-animated-list__scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.rb-animated-list__scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 999px;
+}
+
+.rb-animated-list__scroll::-webkit-scrollbar-thumb {
+  background: rgba(128, 245, 194, 0.32);
+  border-radius: 999px;
+}
+
+.rb-animated-list__scroll--hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.rb-animated-list__scroll--hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.rb-animated-list__motion-item + .rb-animated-list__motion-item {
+  margin-top: 0.75rem;
+}
+
+.rb-animated-list__item {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.028);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.rb-animated-list__item:hover,
+.rb-animated-list__item.is-selected {
+  transform: translateX(4px);
+  border-color: rgba(128, 245, 194, 0.44);
+  background: rgba(128, 245, 194, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(128, 245, 194, 0.08);
+}
+
+.rb-animated-list__item-text {
+  margin: 0;
+  color: var(--text-inverse);
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.rb-animated-list__gradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.rb-animated-list__gradient--top {
+  top: 0;
+  height: 3rem;
+  background: linear-gradient(to bottom, rgba(11, 12, 21, 0.98), transparent);
+}
+
+.rb-animated-list__gradient--bottom {
+  bottom: 0;
+  height: 4rem;
+  background: linear-gradient(to top, rgba(11, 12, 21, 0.98), transparent);
+}
