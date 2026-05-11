@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 210" role="img" aria-label="front leg">
+  <defs>
+    <linearGradient id="leg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d7bd96"/>
+      <stop offset="65%" stop-color="#9e7d5b"/>
+      <stop offset="100%" stop-color="#4d3a2d"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#leg)" stroke="#2d241d" stroke-width="5" stroke-linejoin="round"
+        d="M39 16 C64 8 81 20 82 47
+           L87 137 C88 165 72 190 49 190
+           C27 190 19 167 23 139
+           L30 48 C31 33 32 21 39 16 Z"/>
+  <path fill="#3a2b22" stroke="#2d241d" stroke-width="4"
+        d="M22 172 C37 158 67 158 88 174
+           C88 194 69 202 44 201
+           C23 200 13 189 22 172 Z"/>
+  <path d="M37 63 C49 78 59 82 79 80 M34 117 C49 130 64 134 83 130"
+        stroke="#4e3a2c" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+</svg>
