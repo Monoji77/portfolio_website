@@ -12,6 +12,10 @@ export type Project = {
   summary: string
   focus: string
   impact: string
+  media?: Array<{
+    caption: string
+    imageId: 'risk-lab' | 'abc-ppc' | 'abc-overlay'
+  }>
   stack: string[]
   highlights: string[]
   links?: Array<{
@@ -28,22 +32,48 @@ export type SkillGroup = {
   tools: string[]
 }
 
+export type TimelineMilestone = {
+  id: string
+  year: string
+  title: string
+  side: 'left' | 'right'
+  detailId: string
+}
+
+export type TimelineDetailCard = {
+  id: string
+  yearLabel: string
+  title: string
+  logoId: 'nus' | 'hpb' | 'uoft' | 'infinity' | null
+  summary: string
+  body: string[]
+  courseResultsHeading?: string
+  courseResults?: Array<{
+    label: string
+    grade: string
+    href?: string
+  }>
+  notableMentions?: string[]
+  skillsLabel?: string
+  skills?: string[]
+  imageId?: 'nus-groupmates' | 'hpb-interns' | 'uoft-exchange' | 'risk-lab' | null
+  imageCaption?: string
+  tags: string[]
+}
+
 export const navItems: NavItem[] = [
-  { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
-  { id: 'projects', label: 'Featured Projects' },
-  { id: 'skills', label: 'Technical Skills' },
+  { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ]
 
 export const profile = {
-  name: 'Chris Teo',
-  role: 'Data Science & Analytics | Market Risk | Data Engineering',
-  availability: 'Open to opportunities',
-  heroSummary:
-    'I design decision-ready analytics experiences that balance quantitative depth, clean implementation, and communication that helps people act with confidence.',
-  heroLead:
-    'Portfolio site for employers, collaborators, and teams looking for someone who can move between modeling, engineering, and usable product thinking.',
+  name: 'Chris Yong',
+  role: 'Early Career Data Professional',
+  // heroSummary:
+  //   'Welcome to my portfolio site!',
+  // heroLead:
+  //   'Portfolio site for employers, collaborators, and teams looking for someone who can move between modeling, engineering, and usable product thinking.',
   aboutLead:
     'My work sits at the intersection of analytical rigor, implementation discipline, and stakeholder clarity.',
   aboutBody:
@@ -53,7 +83,7 @@ export const profile = {
 }
 
 export const heroStats = [
-  { value: 3, suffix: '', label: 'Featured projects' },
+  { value: 2, suffix: '', label: 'Featured projects' },
   { value: 4, suffix: '', label: 'Core technical lanes' },
   { value: 12, suffix: '+', label: 'Tools in rotation' },
 ]
@@ -76,53 +106,183 @@ export const principles = [
   },
 ]
 
+export const timelineMilestones: TimelineMilestone[] = [
+  {
+    id: 'now',
+    year: 'Now',
+    title: 'Continual Learning',
+    side: 'left',
+    detailId: 'continual',
+  },
+  {
+    id: 'nus-grad',
+    year: '2026',
+    title: 'Graduated from National University of Singapore',
+    side: 'right',
+    detailId: 'nus',
+  },
+  {
+    id: 'internship',
+    year: '2025',
+    title: 'Data Engineering & Architecture internship',
+    side: 'left',
+    detailId: 'internship',
+  },
+  {
+    id: 'uoft-exchange',
+    year: '2024',
+    title: 'Exchange at University of Toronto',
+    side: 'right',
+    detailId: 'uoft',
+  },
+  {
+    id: 'nus-start',
+    year: '2022',
+    title: 'Matriculated to National University of Singapore',
+    side: 'left',
+    detailId: 'nus',
+  },
+]
+
+export const timelineDetailCards: Record<string, TimelineDetailCard> = {
+  nus: {
+    id: 'nus',
+    yearLabel: '2022 / 2026',
+    title: 'National University of Singapore',
+    logoId: 'nus',
+    summary:
+      'My time at NUS shaped my technical foundation across statistics, programming, machine learning, and data-driven problem solving.',
+    body: [
+      'I developed an interest in building practical analytical systems, especially in risk analytics, simulation, and data engineering.',
+    ],
+    courseResultsHeading: 'Relevant Courses',
+    courseResults: [
+      { label: 'DSA3101 Data Science in Practice', grade: 'A', href: 'https://nusmods.com/courses/DSA3101' },
+      { label: 'DSA4211 High-Dimensional Statistical Analysis', grade: 'A', href: 'https://nusmods.com/courses/DSA4211' },
+      { label: 'ST4245 Multivariate Statistical Analysis', grade: 'A-', href: 'https://nusmods.com/courses/ST4245' },
+      { label: 'CS2030 Programming Methodology II', grade: 'A-', href: 'https://nusmods.com/courses/CS2030' },
+      { label: 'MA2311 Techniques in Advanced Calculus', grade: 'A-', href: 'https://nusmods.com/courses/MA2311' },
+    ],
+    skillsLabel: 'Skills learnt',
+    skills: [
+      'Applied high-dimensional and multivariate statistical methods to complex datasets.',
+      'Built end-to-end data science workflows with an emphasis on practical implementation and teamwork.',
+      'Strengthened object-oriented programming, abstraction, and software design fundamentals.',
+      'Developed mathematical maturity for modelling, optimisation, and analytical reasoning.',
+      'Connected statistical thinking with machine learning and data-driven problem solving in applied settings.',
+    ],
+    imageId: 'nus-groupmates',
+    imageCaption: 'DSA3101 project groupmates during Data Science in Practice.',
+    tags: ['National University of Singapore', 'Foundations', 'Graduation'],
+  },
+  internship: {
+    id: 'internship',
+    yearLabel: '2025',
+    title: 'Data Engineering & Architecture internship',
+    logoId: 'hpb',
+    summary:
+      'Worked on health-related data workflows involving data preparation, validation, geotagging, and stakeholder coordination.',
+    body: [
+      'The internship strengthened my understanding of how data engineering supports reliable analytics, especially when working with operational datasets where accuracy, consistency, and traceability matter.',
+    ],
+    skillsLabel: 'Skills used',
+    skills: ['Azure Databricks', 'Python / Pyspark', 'SQL', 'ETL Pipeline Orchestration', 'Geotagging', 'Stakeholder Management'],
+    imageId: 'hpb-interns',
+    imageCaption: 'Internship cohort at Health Promotion Board.',
+    tags: ['Data engineering', 'Architecture', 'Internship'],
+  },
+  uoft: {
+    id: 'uoft',
+    yearLabel: '2024',
+    title: 'Exchange at University of Toronto',
+    logoId: 'uoft',
+    summary:
+      'Rediscovered how much I enjoy learning for its own sake.',
+    body: [
+      'Studying in a new academic environment encouraged me to be more curious, independent, and open-minded in how I approached unfamiliar ideas.',
+      'Explored courses across urban data analytics, survey sampling, and mathematical proofs, which broadened the way I think about data, systems, and real-world problem solving.',
+      'Reminded me that learning is not only about outcomes, but also about curiosity, perspective, and the willingness to engage deeply with new fields.',
+    ],
+    notableMentions: ['Urban Data Analytics 80/100 (A-)'],
+    skillsLabel: 'Skills learnt',
+    skills: ['Database Systems', 'Urban Data Analytics', 'Statistical Modelling', 'Survey Sampling', 'Discrete Mathematics'],
+    imageId: 'uoft-exchange',
+    imageCaption: 'Exchange semester at the University of Toronto.',
+    tags: ['University of Toronto', 'Exchange', 'Adaptability'],
+  },
+  continual: {
+    id: 'continual',
+    yearLabel: 'Now',
+    title: 'Continual Learning',
+    logoId: 'infinity',
+    summary:
+      'Currently building a Market Risk Engine that helps users explore portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting.',
+    body: [
+      'I am interested in projects that combine data science, financial risk, and engineering to create practical tools for decision-making.',
+    ],
+    imageId: 'risk-lab',
+    imageCaption: 'Current portfolio risk lab and market risk engine workbench.',
+    tags: ['Portfolio growth', 'Iteration', 'Continual learning'],
+  },
+}
+
 export const projects: Project[] = [
   {
     id: 'market-risk-engine',
     title: 'Market Risk Engine',
     category: 'Quantitative Analytics',
     summary:
-      'A risk-focused analytics workflow that turns market data into interpretable signals, scenarios, and reporting views for portfolio decision-making.',
-    focus: 'Risk modeling, scenario design, and decision support presentation.',
+      'An interactive Streamlit application for exploring portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting diagnostics.',
+    focus: 'Built a portfolio risk workbench that turns market-risk calculations into a usable interface for inspection and decision support.',
     impact:
-      'Shows how quantitative outputs can be packaged for people who need confidence in the result, not just raw calculations.',
-    stack: ['Python', 'Pandas', 'Time series modeling', 'Dashboard design'],
+      'Shows how quantitative finance work can move beyond notebooks into a clearer product surface, where risk metrics, comparisons, and diagnostics are easier to interrogate.',
+    media: [
+      {
+        imageId: 'risk-lab',
+        caption: 'Portfolio risk lab interface used to inspect historical VaR, Expected Shortfall, rolling metrics, and backtesting views.',
+      },
+    ],
+    stack: ['Python', 'Pandas', 'Streamlit', 'Historical VaR', 'Expected Shortfall', 'Backtesting'],
     highlights: [
-      'Structured portfolio risk views around what a stakeholder actually needs to inspect.',
-      'Focused on signal readability rather than overcomplicated presentation.',
-      'Designed with a practical reporting mindset, not just model completeness.',
+      'Structured the application around the workflows a user actually needs: portfolio setup, rolling risk inspection, and backtesting review.',
+      'Included historical VaR, Expected Shortfall, and rolling risk views so users can compare point estimates with time-varying behavior.',
+      'Packaged the analysis into a Streamlit surface instead of leaving it as a static script or notebook.',
+    ],
+    links: [
+      { label: 'Live App', href: 'https://market-risk-engine-chris.streamlit.app/' },
+      { label: 'Code Base', href: 'https://github.com/Monoji77/personal_projects/tree/main' },
     ],
   },
   {
     id: 'abc-inference',
     title: 'ABC Inference for Epidemic Simulation',
-    category: 'Modeling & Research',
+    category: 'Simulation-Based Inference',
     summary:
-      'A simulation-driven project exploring approximate Bayesian computation for inference under uncertainty in epidemiological systems.',
-    focus: 'Inference workflows, uncertainty reasoning, and research-grade experimentation.',
+      'Estimated epidemic parameters in an adaptive-network SIR model using Approximate Bayesian Computation when the likelihood was analytically intractable.',
+    focus:
+      'Built a simulation-based Bayesian inference workflow for the posterior of transmission, recovery, and rewiring parameters using summary-statistic matching and multiple likelihood-free inference methods.',
     impact:
-      'Demonstrates statistical depth while keeping the narrative grounded in what the model is actually helping us learn.',
-    stack: ['Python', 'Simulation', 'Bayesian methods', 'Experiment design'],
-    highlights: [
-      'Worked through inference in settings where direct likelihood approaches are not always straightforward.',
-      'Balanced modeling detail with interpretability and narrative framing.',
-      'Built to support investigation rather than treat uncertainty as a side note.',
+      'Compared rejection ABC, regression-adjusted ABC, ABC-MCMC, SMC-ABC, and synthetic-likelihood MCMC on the same reduced-summary calibration, then used posterior predictive checks and summary-set diagnostics to understand what the model was actually identifying.',
+    media: [
+      {
+        imageId: 'abc-ppc',
+        caption: 'Posterior predictive checks across infected fraction, rewiring counts, and final degree histogram under the chosen Reduced set J calibration.',
+      },
+      {
+        imageId: 'abc-overlay',
+        caption: 'Baseline rejection ABC against regression-adjusted ABC, highlighting how local linear adjustment sharpened the posterior.',
+      },
     ],
-  },
-  {
-    id: 'gym-crowd-recommender',
-    title: 'Gym Crowd Recommendation System',
-    category: 'Applied Data Product',
-    summary:
-      'A recommendation-style system aimed at helping users find lower-crowd training windows using observed usage patterns and practical heuristics.',
-    focus: 'User guidance, behavioral patterns, and analytics product framing.',
-    impact:
-      'Good example of turning analysis into a product-oriented recommendation experience instead of leaving it in notebook form.',
-    stack: ['Recommendation logic', 'Behavior analysis', 'Interface thinking', 'User flow design'],
+    stack: ['Python', 'Approximate Bayesian Computation', 'Simulation', 'MCMC', 'SMC', 'Synthetic Likelihood'],
     highlights: [
-      'Framed the problem around usefulness for the end user rather than model novelty alone.',
-      'Used compact logic and presentation to support quick decision-making.',
-      'Connected analytics directly to a habit-based everyday workflow.',
+      'Estimated the posterior of beta, gamma, and rho in an adaptive epidemic model where direct likelihood evaluation was infeasible.',
+      'Used observed summaries from 40 replicates and justified a reduced five-summary reference set that stayed close to the rich-summary posterior.',
+      'Interpreted the residual beta-rho trade-off through joint posterior geometry and posterior predictive checks instead of stopping at point estimates.',
+    ],
+    links: [
+      { label: 'Code Base', href: 'https://github.com/Monoji77/st3247-simulation-project/tree/main' },
+      { label: 'Report', href: 'https://1drv.ms/b/c/20d4d925a0a39848/IQD_7vOB_7JwRIpa7VRm2iMAAZUUBXntI2Yi0QRFLvqb2Cc?e=SoEiKN' },
+      { label: 'Course Context', href: 'https://alexxthiery.github.io/teaching/teaching.html' },
     ],
   },
 ]
@@ -185,22 +345,17 @@ export const skillGroups: SkillGroup[] = [
 export const contactLinks = [
   {
     label: 'Email',
-    value: 'replace-with-your-email@example.com',
-    href: 'mailto:replace-with-your-email@example.com',
+    value: 'chrisyong2009@live.com',
+    href: 'mailto:chrisyong2009@live.com',
   },
   {
     label: 'GitHub',
-    value: 'github.com/your-username',
-    href: 'https://github.com/your-username',
+    value: 'github.com/Monoji77',
+    href: 'https://github.com/Monoji77',
   },
   {
     label: 'LinkedIn',
-    value: 'linkedin.com/in/your-handle',
-    href: 'https://www.linkedin.com/in/your-handle',
-  },
-  {
-    label: 'Resume',
-    value: 'Add your hosted resume link',
-    href: '#contact',
+    value: 'linkedin.com/in/yong-chs',
+    href: 'https://www.linkedin.com/in/yong-chs',
   },
 ]

@@ -4,11 +4,10 @@ import {
   BriefcaseBusiness,
   Check,
   Copy,
-  FileText,
   FolderGit2,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { contactLinks, profile } from '../data/portfolio'
+import { contactLinks } from '../data/portfolio'
 import { SectionHeading } from './SectionHeading'
 import { SectionReveal } from './SectionReveal'
 import { SpotlightCard } from './reactbits/SpotlightCard'
@@ -17,7 +16,6 @@ const iconMap = {
   Email: AtSign,
   GitHub: FolderGit2,
   LinkedIn: BriefcaseBusiness,
-  Resume: FileText,
 } as const
 
 export function ContactSection() {
@@ -51,19 +49,18 @@ export function ContactSection() {
     <section className="section-band section-band--light" id="contact">
       <div className="section-inner">
         <SectionHeading
-          description="A final section that keeps the next step obvious: connect, review the work, and continue the conversation."
+          description="A simple place to connect, share thoughts, or continue the conversation."
           eyebrow="Contact"
-          title="If the way I work fits your team, let's talk."
+          title="If something here resonates, feel free to reach out."
         />
 
         <div className="contact-section__layout">
           <SectionReveal>
             <SpotlightCard className="contact-section__highlight">
-              <span className="contact-section__availability">{profile.availability}</span>
-              <h3>Available for analytics, risk, and data product conversations.</h3>
+              <h3>Happy to connect around data, analytics, and thoughtful technical work.</h3>
               <p>
-                This portfolio is set up to give employers a fast read on how I think, what I build,
-                and how I package technical work so it lands clearly.
+                Whether you want to talk about a project, compare notes, or just say hello, email
+                and LinkedIn are the easiest ways to reach me.
               </p>
 
               <div className="contact-section__actions">
@@ -90,7 +87,7 @@ export function ContactSection() {
                   )}
                 </button>
                 <a className="button button--secondary" href="#projects">
-                  Review projects
+                  See projects
                 </a>
               </div>
             </SpotlightCard>

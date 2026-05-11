@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AboutSection } from './components/AboutSection'
 import { ContactSection } from './components/ContactSection'
+import DarkVeil from './components/DarkVeil'
 import { FeaturedProjectsSection } from './components/FeaturedProjectsSection'
 import { HomeSection } from './components/HomeSection'
 import { PortfolioNav } from './components/PortfolioNav'
@@ -10,44 +11,77 @@ import { navItems, type NavSection } from './data/portfolio'
 
 function App() {
   const [activeSection, setActiveSection] = useState<NavSection>('home')
+  const [navVisible, setNavVisible] = useState(false)
 
   useEffect(() => {
-    const sections = navItems
+    const trackedSections = navItems
       .map((item) => document.getElementById(item.id))
       .filter((section): section is HTMLElement => section instanceof HTMLElement)
 
-    if (!sections.length) {
+    if (!trackedSections.length) {
       return
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+    const updateActiveSection = () => {
+      const probeY = window.scrollY + window.innerHeight * 0.38
+      let nextActiveSection = trackedSections[0].id as NavSection
 
-        if (!visibleEntries.length) {
-          return
+      for (let index = 0; index < trackedSections.length; index += 1) {
+        const section = trackedSections[index]
+        const nextSection = trackedSections[index + 1]
+        const sectionTop = section.offsetTop
+        const nextSectionTop = nextSection?.offsetTop ?? Number.POSITIVE_INFINITY
+
+        if (probeY >= sectionTop && probeY < nextSectionTop) {
+          nextActiveSection = section.id as NavSection
+          break
         }
+      }
 
-        const nextSection = visibleEntries[0].target.id as NavSection
-        setActiveSection(nextSection)
-      },
-      {
-        rootMargin: '-35% 0px -45% 0px',
-        threshold: [0.2, 0.35, 0.5, 0.7],
-      },
-    )
+      setActiveSection(nextActiveSection)
+    }
 
-    sections.forEach((section) => observer.observe(section))
+    updateActiveSection()
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('resize', updateActiveSection)
 
-    return () => observer.disconnect()
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setNavVisible(window.scrollY > 120)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
     <div className="portfolio-shell">
+      <div aria-hidden="true" className="portfolio-background">
+        <div className="portfolio-background__veil">
+          <DarkVeil
+            hueShift={34}
+            noiseIntensity={0.04}
+            resolutionScale={1}
+            scanlineFrequency={3.6}
+            scanlineIntensity={0.16}
+            speed={1.65}
+            warpAmount={0.46}
+          />
+        </div>
+        <div className="portfolio-background__gradient" />
+        <div className="portfolio-background__grid" />
+        <div className="portfolio-background__glow" />
+      </div>
       <ScrollProgress />
-      <PortfolioNav activeSection={activeSection} />
+      <PortfolioNav activeSection={activeSection} visible={navVisible} />
       <main className="portfolio-main">
         <HomeSection />
         <AboutSection />

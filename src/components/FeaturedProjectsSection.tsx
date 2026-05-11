@@ -1,14 +1,44 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
+import abcOverlayImage from '../assets/basic_abc_vs_regression_adjusted_overlay.png'
+import abcPpcImage from '../assets/ppc_all_observables.png'
+import riskLabImage from '../assets/portfolio_risk_lab.png'
 import { projects } from '../data/portfolio'
 import { SectionHeading } from './SectionHeading'
 import { SectionReveal } from './SectionReveal'
 import { SpotlightCard } from './reactbits/SpotlightCard'
 
+const projectMediaMap = {
+  'abc-overlay': {
+    alt: 'Baseline rejection ABC versus regression-adjusted ABC overlay',
+    src: abcOverlayImage,
+  },
+  'abc-ppc': {
+    alt: 'Posterior predictive checks across epidemic observables',
+    src: abcPpcImage,
+  },
+  'risk-lab': {
+    alt: 'Market Risk Engine portfolio risk lab interface',
+    src: riskLabImage,
+  },
+} as const
+
+const projectOrder = ['market-risk-engine', 'abc-inference'] as const
+
 export function FeaturedProjectsSection() {
-  const [activeProjectId, setActiveProjectId] = useState(projects[0].id)
-  const activeProject = projects.find((project) => project.id === activeProjectId) ?? projects[0]
+  const orderedProjects = [...projects].sort((leftProject, rightProject) => {
+    const leftIndex = projectOrder.indexOf(leftProject.id as (typeof projectOrder)[number])
+    const rightIndex = projectOrder.indexOf(rightProject.id as (typeof projectOrder)[number])
+
+    const normalizedLeftIndex = leftIndex === -1 ? Number.MAX_SAFE_INTEGER : leftIndex
+    const normalizedRightIndex = rightIndex === -1 ? Number.MAX_SAFE_INTEGER : rightIndex
+
+    return normalizedLeftIndex - normalizedRightIndex
+  })
+
+  const [activeProjectId, setActiveProjectId] = useState(orderedProjects[0]?.id ?? '')
+  const activeProject = orderedProjects.find((project) => project.id === activeProjectId) ?? orderedProjects[0]
 
   return (
     <section className="section-band section-band--warm" id="projects">
@@ -21,7 +51,7 @@ export function FeaturedProjectsSection() {
 
         <div className="projects-section__layout">
           <div className="projects-section__grid">
-            {projects.map((project, index) => {
+            {orderedProjects.map((project, index) => {
               const isActive = project.id === activeProjectId
 
               return (
@@ -89,6 +119,24 @@ export function FeaturedProjectsSection() {
                     ))}
                   </ul>
                 </div>
+
+                {activeProject.media?.length ? (
+                  <div className="projects-section__detail-block">
+                    <h4>Selected Visuals</h4>
+                    <div className={`projects-section__media-grid ${activeProject.media.length > 1 ? 'is-split' : ''}`.trim()}>
+                      {activeProject.media.map((media) => {
+                        const image = projectMediaMap[media.imageId]
+
+                        return (
+                          <figure className="projects-section__media" key={media.imageId}>
+                            <img alt={image.alt} className="projects-section__media-image" src={image.src} />
+                            <figcaption>{media.caption}</figcaption>
+                          </figure>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ) : null}
 
                 {activeProject.links?.length ? (
                   <div className="projects-section__detail-links">
