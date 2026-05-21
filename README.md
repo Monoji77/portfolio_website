@@ -1,73 +1,99 @@
-# React + TypeScript + Vite
+# Personal Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-19-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![Motion](https://img.shields.io/badge/Motion-12-111111?logo=framer&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-10-4B32C3?logo=eslint&logoColor=white)
+![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Configured-222222?logo=github&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-Configured-00C7B7?logo=netlify&logoColor=white)
 
-Currently, two official plugins are available:
+This repository contains the source code for a single-page personal portfolio website built to present background, selected work, technical skills, and contact information in a clear and polished format.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Overview
 
-## React Compiler
+The site is designed as a modern frontend application rather than a static profile page. It combines strong visual presentation with structured content, using reusable components, animation, and section-based navigation to make the experience easy to explore.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Key Features
 
-## Expanding the ESLint configuration
+- Single-page layout with dedicated sections for introduction, background, featured projects, technical skills, and contact details
+- Scroll-aware navigation and progress feedback for smoother browsing
+- Interactive project showcase with expandable detail views and supporting visuals
+- Animated UI elements, including text reveals, transitions, and a rotating skills carousel
+- Centralized content model in `src/data/portfolio.ts` for maintaining profile text, projects, and timeline details
+- Deployment-ready build output with repository configuration for both GitHub Pages and Netlify
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Frontend
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- Motion
+- Lucide React
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Tooling and Deployment
+
+- ESLint
+- GitHub Actions
+- GitHub Pages
+- Netlify
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Run Locally
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the local development server, then open `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Available Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Starts the Vite development server |
+| `npm run build` | Runs TypeScript build checks and creates a production build in `dist/` |
+| `npm run lint` | Runs ESLint across the project |
+| `npm run preview` | Serves the production build locally for review |
+
+## Project Structure
+
+```text
+.
+├── .github/workflows/    # GitHub Pages deployment workflow
+├── public/               # Static public assets
+├── src/
+│   ├── assets/           # Images and media
+│   ├── components/       # Reusable UI sections and interactive elements
+│   ├── data/             # Portfolio content and structured page data
+│   ├── styles/           # Global and section-specific styles
+│   ├── App.tsx           # Main page composition
+│   └── main.tsx          # Application entry point
+├── netlify.toml          # Netlify build configuration
+├── package.json          # Scripts and dependencies
+└── vite.config.ts        # Vite configuration
 ```
+
+## Deployment
+
+Production assets are generated with:
+
+```bash
+npm run build
+```
+
+This repository includes deployment configuration for:
+
+- GitHub Pages via `.github/workflows/deploy.yml`
+- Netlify via `netlify.toml`
