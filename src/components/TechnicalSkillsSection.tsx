@@ -102,9 +102,13 @@ export function TechnicalSkillsSection() {
 
     isSnappingRef.current = true
     const duration = 520
-    const startTime = performance.now()
+    let startTime: number | null = null
 
     const animateSnap = (time: number) => {
+      if (startTime === null) {
+        startTime = time
+      }
+
       const progress = Math.min(1, (time - startTime) / duration)
       const eased = 1 - Math.pow(1 - progress, 3)
       const nextRotation = normalizeRotation(startRotation + delta * eased)
