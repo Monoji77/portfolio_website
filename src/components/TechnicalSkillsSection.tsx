@@ -132,7 +132,7 @@ export function TechnicalSkillsSection() {
         <SectionHeading
           description=""
           eyebrow="Technical Skills"
-          title="A rotating view of the tech stack I keep reaching for."
+          title="Tools & Libraries"
         />
 
         <SectionReveal className="skills-section__carousel-shell">
