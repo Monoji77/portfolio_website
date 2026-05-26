@@ -12,6 +12,8 @@
 
 ## Overview
 
+![Demo](./assets/demo.gif)
+
 This repository contains the source code for a single-page portfolio website that presents background, selected work, technical skills, and contact information in a structured, polished format.
 
 Live site: [chrisyong-portfolio.com](https://chrisyong-portfolio.com/)

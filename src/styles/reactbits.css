@@ -37,6 +37,48 @@
   opacity: 0.88;
 }
 
+.rb-tilted-card {
+  --rb-tilt-rotate-x: 0deg;
+  --rb-tilt-rotate-y: 0deg;
+  --rb-tilt-glare-x: 50%;
+  --rb-tilt-glare-y: 50%;
+  position: relative;
+  height: 100%;
+  perspective: 1600px;
+  transform-style: preserve-3d;
+}
+
+.rb-tilted-card__inner {
+  position: relative;
+  height: 100%;
+  transform:
+    rotateX(var(--rb-tilt-rotate-x))
+    rotateY(var(--rb-tilt-rotate-y))
+    translateZ(0);
+  transform-style: preserve-3d;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+  will-change: transform;
+}
+
+.rb-tilted-card__inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--rb-tilt-glare-x) var(--rb-tilt-glare-y), rgba(255, 255, 255, 0.2), transparent 44%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.rb-tilted-card:hover .rb-tilted-card__inner::before,
+.rb-tilted-card:focus-within .rb-tilted-card__inner::before {
+  opacity: 1;
+}
+
 .rb-animated-list {
   position: relative;
   width: 100%;

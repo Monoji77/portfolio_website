@@ -10,18 +10,24 @@ export type Project = {
   title: string
   category: string
   summary: string
+  statusNote?: string
   focus: string
   impact: string
   media?: Array<{
     caption: string
-    imageId: 'risk-lab' | 'abc-ppc' | 'abc-overlay'
+    imageId: 'risk-lab-2-0' | 'risk-lab' | 'abc-ppc' | 'abc-overlay'
   }>
-  stack: string[]
+  stack: Array<string | ProjectStackItem>
   highlights: string[]
   links?: Array<{
     label: string
     href: string
   }>
+}
+
+export type ProjectStackItem = {
+  label: string
+  tone?: 'warm'
 }
 
 export type SkillGroup = {
@@ -83,7 +89,7 @@ export const profile = {
 }
 
 export const heroStats = [
-  { value: 2, suffix: '', label: 'Featured projects' },
+  { value: 3, suffix: '', label: 'Featured projects' },
   { value: 4, suffix: '', label: 'Core technical lanes' },
   { value: 12, suffix: '+', label: 'Tools in rotation' },
 ]
@@ -228,21 +234,55 @@ export const timelineDetailCards: Record<string, TimelineDetailCard> = {
 
 export const projects: Project[] = [
   {
+    id: 'market-risk-engine-2-0',
+    title: 'Market Risk Engine 2.0',
+    category: 'Quantitative Research',
+    summary:
+      'A new iteration of the Market Risk Engine aimed at moving beyond the first Streamlit prototype toward broader market-aware risk calculations and a stronger research foundation.',
+    focus:
+      'Reframing the project around deeper quantitative finance research so portfolio risk estimates can account for richer market structure and more realistic drivers.',
+    impact:
+      'Extends the original portfolio-risk workflow into a more research-led engine that aims to incorporate additional market factors, sharper assumptions, and a more durable analytical architecture.',
+    media: [
+      {
+        imageId: 'risk-lab-2-0',
+        caption: 'Early Market Risk Engine 2.0 interface and workflow snapshot.',
+      },
+    ],
+    stack: [
+      { label: 'React 19', tone: 'warm' },
+      { label: 'TypeScript', tone: 'warm' },
+      { label: 'Vite', tone: 'warm' },
+      'Python',
+      'FastAPI',
+    ],
+    highlights: [
+      'Recalibrating the first engine after seeing the practical limits of slow Streamlit rendering for an interactive risk workflow.',
+      'Using "Trades, Quotes and Prices" by Bouchaud et al. as a reference point for expanding the modelling frame beyond standard classroom treatments of market risk.',
+      'Treating this as a next-phase research and engineering build focused on broader market factors and stronger risk logic.',
+    ],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/Monoji77/market-risk-engine-2.0' },
+    ],
+  },
+  {
     id: 'market-risk-engine',
-    title: 'Market Risk Engine',
+    title: 'Market Risk Engine 1.0',
     category: 'Quantitative Analytics',
     summary:
       'An interactive Streamlit application for exploring portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting diagnostics.',
+    statusNote:
+      'Due to slow rendering of Streamlit apps, I am recalibrating to "Market Risk Engine 2.0". Furthermore, I am reading "Trades, Quotes and Prices" by Bouchaud et al. and will improve risk calculations in consideration of more market factors beyond what was taught in school in newer project.',
     focus: 'Built a portfolio risk workbench that turns market-risk calculations into a usable interface for inspection and decision support.',
     impact:
-      'Shows how quantitative finance work can move beyond notebooks into a clearer product surface, where risk metrics, comparisons, and diagnostics are easier to interrogate.',
+      'Supports custom portfolio risk calculations along with popular predefined portfolios like Tangency and Global Minimum Portfolios.',
     media: [
       {
         imageId: 'risk-lab',
         caption: 'Portfolio risk lab interface used to inspect historical VaR, Expected Shortfall, rolling metrics, and backtesting views.',
       },
     ],
-    stack: ['Python', 'Pandas', 'Streamlit', 'Historical VaR', 'Expected Shortfall', 'Backtesting'],
+    stack: [{ label: 'Streamlit', tone: 'warm' }, 'Python'],
     highlights: [
       'Structured the application around the workflows a user actually needs: portfolio setup, rolling risk inspection, and backtesting review.',
       'Included historical VaR, Expected Shortfall, and rolling risk views so users can compare point estimates with time-varying behavior.',
@@ -273,7 +313,7 @@ export const projects: Project[] = [
         caption: 'Baseline rejection ABC against regression-adjusted ABC, highlighting how local linear adjustment sharpened the posterior.',
       },
     ],
-    stack: ['Python', 'Approximate Bayesian Computation', 'Simulation', 'MCMC', 'SMC', 'Synthetic Likelihood'],
+    stack: ['Python'],
     highlights: [
       'Estimated the posterior of beta, gamma, and rho in an adaptive epidemic model where direct likelihood evaluation was infeasible.',
       'Used observed summaries from 40 replicates and justified a reduced five-summary reference set that stayed close to the rich-summary posterior.',

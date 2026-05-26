@@ -1,13 +1,14 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { ArrowUpRight, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowUpRight, X } from 'lucide-react'
+import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import abcOverlayImage from '../assets/basic_abc_vs_regression_adjusted_overlay.png'
+import marketRisk20Image from '../assets/market_risk_2.0.png'
 import abcPpcImage from '../assets/ppc_all_observables.png'
 import riskLabImage from '../assets/portfolio_risk_lab.png'
-import { projects } from '../data/portfolio'
+import { projects, type Project } from '../data/portfolio'
 import { SectionHeading } from './SectionHeading'
 import { SectionReveal } from './SectionReveal'
-import { SpotlightCard } from './reactbits/SpotlightCard'
+import { TiltedCard } from './reactbits/TiltedCard'
 
 const projectMediaMap = {
   'abc-overlay': {
@@ -19,149 +20,252 @@ const projectMediaMap = {
     src: abcPpcImage,
   },
   'risk-lab': {
-    alt: 'Market Risk Engine portfolio risk lab interface',
+    alt: 'Market Risk Engine 1.0 portfolio risk lab interface',
     src: riskLabImage,
+  },
+  'risk-lab-2-0': {
+    alt: 'Market Risk Engine 2.0 interface preview',
+    src: marketRisk20Image,
   },
 } as const
 
-const projectOrder = ['market-risk-engine', 'abc-inference'] as const
+const projectOrder = ['market-risk-engine-2-0', 'market-risk-engine', 'abc-inference'] as const
 
 export function FeaturedProjectsSection() {
-  const orderedProjects = [...projects].sort((leftProject, rightProject) => {
-    const leftIndex = projectOrder.indexOf(leftProject.id as (typeof projectOrder)[number])
-    const rightIndex = projectOrder.indexOf(rightProject.id as (typeof projectOrder)[number])
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
-    const normalizedLeftIndex = leftIndex === -1 ? Number.MAX_SAFE_INTEGER : leftIndex
-    const normalizedRightIndex = rightIndex === -1 ? Number.MAX_SAFE_INTEGER : rightIndex
+  const orderedProjects = useMemo(
+    () =>
+      [...projects].sort((leftProject, rightProject) => {
+        const leftIndex = projectOrder.indexOf(leftProject.id as (typeof projectOrder)[number])
+        const rightIndex = projectOrder.indexOf(rightProject.id as (typeof projectOrder)[number])
 
-    return normalizedLeftIndex - normalizedRightIndex
-  })
+        const normalizedLeftIndex = leftIndex === -1 ? Number.MAX_SAFE_INTEGER : leftIndex
+        const normalizedRightIndex = rightIndex === -1 ? Number.MAX_SAFE_INTEGER : rightIndex
 
-  const [activeProjectId, setActiveProjectId] = useState(orderedProjects[0]?.id ?? '')
-  const activeProject = orderedProjects.find((project) => project.id === activeProjectId) ?? orderedProjects[0]
+        return normalizedLeftIndex - normalizedRightIndex
+      }),
+    [],
+  )
+
+  const activeProject = useMemo(
+    () => orderedProjects.find((project) => project.id === activeProjectId) ?? null,
+    [activeProjectId, orderedProjects],
+  )
+
+  useEffect(() => {
+    if (!activeProject) {
+      return
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveProjectId(null)
+      }
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.classList.add('project-modal-open')
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.classList.remove('project-modal-open')
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [activeProject])
+
+  useEffect(() => {
+    if (!activeProjectId || !modalRef.current) {
+      return
+    }
+
+    modalRef.current.scrollTop = 0
+    modalRef.current.scrollLeft = 0
+
+    const frameId = window.requestAnimationFrame(() => {
+      if (!modalRef.current) {
+        return
+      }
+
+      modalRef.current.scrollTop = 0
+      modalRef.current.scrollLeft = 0
+    })
+
+    return () => window.cancelAnimationFrame(frameId)
+  }, [activeProjectId])
 
   return (
-    <section className="section-band section-band--warm" id="projects">
-      <div className="section-inner">
-        <SectionHeading
-          description="A few selected builds that show how I think through modeling, systems, and product-facing clarity."
-          eyebrow="Featured Projects"
-          title="Not just what I built, but how I shaped the work into something usable."
-        />
+    <LayoutGroup id="featured-projects">
+      <section className="section-band section-band--warm" id="projects">
+        <div className="section-inner">
+          <SectionHeading
+            description="A few selected builds that show how I think through modeling, systems, and product-facing clarity."
+            eyebrow="Featured Projects"
+            title="Not just what I built, but how I shaped the work into something usable."
+          />
 
-        <div className="projects-section__layout">
-          <div className="projects-section__grid">
-            {orderedProjects.map((project, index) => {
-              const isActive = project.id === activeProjectId
+          <div className="projects-section__layout">
+            <div className="projects-section__grid">
+              {orderedProjects.map((project, index) => {
+                const selectedMedia = project.media?.[0] ? projectMediaMap[project.media[0].imageId] : null
+
+                return (
+                  <SectionReveal delay={index * 0.08} key={project.id}>
+                    <button
+                      aria-expanded={activeProject?.id === project.id}
+                      aria-haspopup="dialog"
+                      className="projects-section__card-button"
+                      onClick={() => setActiveProjectId(project.id)}
+                      type="button"
+                    >
+                      <motion.div className="projects-section__card-motion" layoutId={`project-card-${project.id}`}>
+                        <TiltedCard className="projects-section__card-shell">
+                          {selectedMedia ? (
+                            <div className="projects-section__card-visual">
+                              <img alt={selectedMedia.alt} className="projects-section__card-image" src={selectedMedia.src} />
+                            </div>
+                          ) : null}
+
+                          <div className="projects-section__card-copy">
+                            <h3>{project.title}</h3>
+                            <p>{project.summary}</p>
+                          </div>
+                        </TiltedCard>
+                      </motion.div>
+                    </button>
+                  </SectionReveal>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <AnimatePresence>
+        {activeProject ? (
+          <motion.div
+            animate={{ opacity: 1 }}
+            className="projects-section__overlay"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            onClick={() => setActiveProjectId(null)}
+          >
+            <motion.div
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              className="projects-section__modal-shell"
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              onClick={(event) => event.stopPropagation()}
+              role="dialog"
+              aria-labelledby={`project-title-${activeProject.id}`}
+              aria-modal="true"
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.div className="projects-section__modal" key={activeProject.id} layoutId={`project-card-${activeProject.id}`}>
+                <div className="projects-section__modal-content" ref={modalRef}>
+                  <div className="projects-section__modal-header">
+                    <div className="projects-section__modal-heading">
+                      <span className="projects-section__detail-eyebrow">{activeProject.category}</span>
+                      <h3 id={`project-title-${activeProject.id}`}>{activeProject.title}</h3>
+                    </div>
+
+                    <button
+                      aria-label="Close project detail"
+                      className="projects-section__modal-close"
+                      onClick={() => setActiveProjectId(null)}
+                      type="button"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+
+                  <ProjectDetailContent project={activeProject} />
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </LayoutGroup>
+  )
+}
+
+function ProjectDetailContent({ project }: { project: Project }) {
+  return (
+    <>
+      {project.statusNote ? <p className="projects-section__detail-status">{project.statusNote}</p> : null}
+      <p className="projects-section__detail-summary">{project.focus}</p>
+      <p className="projects-section__modal-impact">{project.impact}</p>
+
+      <div className="projects-section__detail-meta">
+        <span>{project.highlights.length} delivery notes</span>
+        <span>{project.stack.length} stack items</span>
+      </div>
+
+      <div className="projects-section__detail-block">
+        <h4>Highlights</h4>
+        <ul className="detail-list">
+          {project.highlights.map((highlight) => (
+            <li key={highlight}>{highlight}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="projects-section__detail-block">
+        <h4>Stack</h4>
+        <ul className="tag-row tag-row--dark" aria-label={`${project.title} stack`}>
+          {project.stack.map((item) => {
+            const label = typeof item === 'string' ? item : item.label
+            const toneClass = typeof item === 'string' || !item.tone ? '' : ` tag-row__item--${item.tone}`
+
+            return (
+              <li className={toneClass.trim()} key={label}>
+                {label}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      {project.media?.length ? (
+        <div className="projects-section__detail-block">
+          <div className={`projects-section__media-grid ${project.media.length > 1 ? 'is-split' : ''}`.trim()}>
+            {project.media.map((media) => {
+              const image = projectMediaMap[media.imageId]
 
               return (
-                <SectionReveal delay={index * 0.06} key={project.id}>
-                  <button
-                    className={`projects-section__card-button ${isActive ? 'is-active' : ''}`.trim()}
-                    onClick={() => setActiveProjectId(project.id)}
-                    onFocus={() => setActiveProjectId(project.id)}
-                    onMouseEnter={() => setActiveProjectId(project.id)}
-                    type="button"
-                  >
-                    <SpotlightCard className={`projects-section__card ${isActive ? 'is-active' : ''}`.trim()}>
-                      <div className="projects-section__card-meta">
-                        <span>{project.category}</span>
-                        <ChevronRight size={16} />
-                      </div>
-                      <h3>{project.title}</h3>
-                      <p>{project.summary}</p>
-                      <ul className="tag-row" aria-label={`${project.title} technology`}>
-                        {project.stack.slice(0, 3).map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </SpotlightCard>
-                  </button>
-                </SectionReveal>
+                <figure className="projects-section__media" key={media.imageId}>
+                  <img alt={image.alt} className="projects-section__media-image" src={image.src} />
+                  <figcaption>{media.caption}</figcaption>
+                </figure>
               )
             })}
           </div>
-
-          <SectionReveal className="projects-section__detail-shell" delay={0.18}>
-            <AnimatePresence mode="wait">
-              <motion.article
-                animate={{ opacity: 1, y: 0 }}
-                className="projects-section__detail"
-                exit={{ opacity: 0, y: 18 }}
-                initial={{ opacity: 0, y: 18 }}
-                key={activeProject.id}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <span className="projects-section__detail-eyebrow">{activeProject.category}</span>
-                <h3>{activeProject.title}</h3>
-                <p className="projects-section__detail-summary">{activeProject.focus}</p>
-                <p>{activeProject.impact}</p>
-
-                <div className="projects-section__detail-meta">
-                  <span>{activeProject.highlights.length} delivery notes</span>
-                  <span>{activeProject.stack.length} tools and methods</span>
-                </div>
-
-                <div className="projects-section__detail-block">
-                  <h4>Highlights</h4>
-                  <ul className="detail-list">
-                    {activeProject.highlights.map((highlight) => (
-                      <li key={highlight}>{highlight}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="projects-section__detail-block">
-                  <h4>Stack</h4>
-                  <ul className="tag-row tag-row--dark" aria-label={`${activeProject.title} stack`}>
-                    {activeProject.stack.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {activeProject.media?.length ? (
-                  <div className="projects-section__detail-block">
-                    <h4>Selected Visuals</h4>
-                    <div className={`projects-section__media-grid ${activeProject.media.length > 1 ? 'is-split' : ''}`.trim()}>
-                      {activeProject.media.map((media) => {
-                        const image = projectMediaMap[media.imageId]
-
-                        return (
-                          <figure className="projects-section__media" key={media.imageId}>
-                            <img alt={image.alt} className="projects-section__media-image" src={image.src} />
-                            <figcaption>{media.caption}</figcaption>
-                          </figure>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ) : null}
-
-                {activeProject.links?.length ? (
-                  <div className="projects-section__detail-links">
-                    {activeProject.links.map((link) => (
-                      <a
-                        href={link.href}
-                        key={link.label}
-                        rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
-                        target={link.href.startsWith('http') ? '_blank' : undefined}
-                      >
-                        {link.label}
-                        <ArrowUpRight size={16} />
-                      </a>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="projects-section__detail-note">
-                    Detailed walkthroughs and live links can be attached here once you add your project destinations.
-                  </p>
-                )}
-              </motion.article>
-            </AnimatePresence>
-          </SectionReveal>
         </div>
-      </div>
-    </section>
+      ) : null}
+
+      {project.links?.length ? (
+        <div className="projects-section__detail-links">
+          {project.links.map((link) => (
+            <a
+              href={link.href}
+              key={link.label}
+              rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
+              target={link.href.startsWith('http') ? '_blank' : undefined}
+            >
+              {link.label}
+              <ArrowUpRight size={16} />
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p className="projects-section__detail-note">
+          Detailed walkthroughs and live links can be attached here once you add your project destinations.
+        </p>
+      )}
+    </>
   )
 }
