@@ -262,6 +262,7 @@ export const projects: Project[] = [
       'Treating this as a next-phase research and engineering build focused on broader market factors and stronger risk logic.',
     ],
     links: [
+      { label: 'Live App', href: 'https://market-risk-engine-2-0.vercel.app/' },
       { label: 'GitHub', href: 'https://github.com/Monoji77/market-risk-engine-2.0' },
     ],
   },
