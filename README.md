@@ -12,7 +12,7 @@
 
 ## Overview
 
-![Demo](./assets/demo.gif)
+![Demo](assets/portfolio_demo.gif)
 
 This repository contains the source code for a single-page portfolio website that presents background, selected work, technical skills, and contact information in a structured, polished format.
 
