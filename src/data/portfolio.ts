@@ -226,13 +226,14 @@ export const timelineDetailCards: Record<string, TimelineDetailCard> = {
     title: 'Continual Learning',
     logoId: 'infinity',
     summary:
-      'Currently building a Market Risk Engine that helps users explore portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting.',
+      'Currently studying for CFA Level I while building a Market Risk Engine that helps users explore portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting.',
     body: [
-      'I am interested in projects that combine data science, financial risk, and engineering to create practical tools for decision-making.',
+      'I am using CFA Level I preparation to strengthen my foundations in financial reporting, portfolio management, ethics, and quantitative methods alongside project work.',
+      'That study track complements my interest in projects that combine data science, financial risk, and engineering to create practical tools for decision-making.',
     ],
     imageId: 'risk-lab',
     imageCaption: 'Current portfolio risk lab and market risk engine workbench.',
-    tags: ['Portfolio growth', 'Iteration', 'Continual learning'],
+    tags: ['CFA Level I', 'Portfolio growth', 'Continual learning'],
   },
 }
 

@@ -12,8 +12,8 @@ export function AboutSection() {
           eyebrow="About"
           title={
             <>
-              Perpetually building practical, <span className="about-section__heading-highlight">data-driven</span>{' '}
-              products across risk analytics, machine learning, and data engineering
+              Interested in the use of <span className="about-section__heading-highlight">statistics</span>{' '}
+              across risk analytics, finance, machine learning, and data engineering
             </>
           }
         />
