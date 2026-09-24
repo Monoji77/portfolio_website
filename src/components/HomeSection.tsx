@@ -63,7 +63,7 @@ export function HomeSection() {
 
           <div className="home-section__interest-panel">
             <span>Personal Interests</span>
-            <strong>Financial Risk Modelling, Big Data Architecture, Machine Learning</strong>
+            <strong>Big Data Architecture, Time Series Machine Learning, Financial Risk Modelling</strong>
           </div>
 
           <ul className="home-section__stats" aria-label="Portfolio overview">

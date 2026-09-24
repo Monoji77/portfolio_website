@@ -11,11 +11,12 @@ export type Project = {
   category: string
   summary: string
   statusNote?: string
+  archived?: boolean
   focus: string
   impact: string
   media?: Array<{
     caption: string
-    imageId: 'risk-lab-2-0' | 'risk-lab' | 'abc-ppc' | 'abc-overlay'
+    imageId: 'usage-pipeline' | 'risk-lab-2-0' | 'risk-lab' | 'abc-ppc' | 'abc-overlay'
   }>
   stack: Array<string | ProjectStackItem>
   highlights: string[]
@@ -46,11 +47,31 @@ export type TimelineMilestone = {
   detailId: string
 }
 
+export type TechLogoId =
+  | 'oceanbase'
+  | 'starrocks'
+  | 'kafka'
+  | 'flink'
+  | 's3'
+  | 'iceberg'
+  | 'spark'
+  | 'airflow'
+  | 'java'
+  | 'springboot'
+  | 'timescale'
+  | 'react'
+  | 'typescript'
+
+export type TechStackItem = {
+  name: string
+  logoId: TechLogoId
+}
+
 export type TimelineDetailCard = {
   id: string
   yearLabel: string
   title: string
-  logoId: 'nus' | 'hpb' | 'uoft' | 'infinity' | null
+  logoId: 'nus' | 'hpb' | 'uoft' | 'infinity' | 'vanguard' | null
   summary: string
   body: string[]
   courseResultsHeading?: string
@@ -62,8 +83,10 @@ export type TimelineDetailCard = {
   notableMentions?: string[]
   skillsLabel?: string
   skills?: string[]
-  imageId?: 'nus-groupmates' | 'hpb-interns' | 'uoft-exchange' | 'risk-lab' | null
+  techStack?: TechStackItem[]
+  imageId?: 'nus-groupmates' | 'hpb-interns' | 'uoft-exchange' | 'usage-pipeline' | null
   imageCaption?: string
+  imageHref?: string
   tags: string[]
 }
 
@@ -88,12 +111,6 @@ export const profile = {
     'Whether the work starts as risk analysis, inference, experimentation, or reporting, I care about how the final system behaves in the hands of its audience. Good analytics should not stop at accuracy; it should land clearly, travel well, and hold up under pressure.',
 }
 
-export const heroStats = [
-  { value: 3, suffix: '', label: 'Featured projects' },
-  { value: 4, suffix: '', label: 'Core technical lanes' },
-  { value: 12, suffix: '+', label: 'Tools in rotation' },
-]
-
 export const principles = [
   {
     title: 'Decision-first thinking',
@@ -114,38 +131,45 @@ export const principles = [
 
 export const timelineMilestones: TimelineMilestone[] = [
   {
+    id: 'vanguard',
+    year: 'Now',
+    title: 'Data Engineer at Vanguard Software',
+    side: 'right',
+    detailId: 'vanguard',
+  },
+  {
     id: 'now',
     year: 'Now',
     title: 'Continual Learning',
-    side: 'left',
+    side: 'right',
     detailId: 'continual',
   },
   {
     id: 'nus-grad',
     year: '2026',
     title: 'Graduated from National University of Singapore',
-    side: 'right',
+    side: 'left',
     detailId: 'nus',
   },
   {
     id: 'internship',
     year: '2025',
     title: 'Data Engineering & Architecture internship',
-    side: 'left',
+    side: 'right',
     detailId: 'internship',
   },
   {
     id: 'uoft-exchange',
     year: '2024',
     title: 'Exchange at University of Toronto',
-    side: 'right',
+    side: 'left',
     detailId: 'uoft',
   },
   {
     id: 'nus-start',
     year: '2022',
     title: 'Matriculated to National University of Singapore',
-    side: 'left',
+    side: 'right',
     detailId: 'nus',
   },
 ]
@@ -220,28 +244,95 @@ export const timelineDetailCards: Record<string, TimelineDetailCard> = {
     imageCaption: 'Exchange semester at the University of Toronto.',
     tags: ['University of Toronto', 'Exchange', 'Adaptability'],
   },
+  vanguard: {
+    id: 'vanguard',
+    yearLabel: 'Now',
+    title: 'Data Engineer at Vanguard Software',
+    logoId: 'vanguard',
+    summary:
+      'Engineering and maintaining production-grade data infrastructure that supports high-volume transactional and analytical workloads across real-time and batch processing systems.',
+    body: [
+      'I build and operate end-to-end data pipelines spanning OceanBase-based OLTP systems, Kafka event streams, Apache Flink stream processing, and StarRocks analytical data warehouses, alongside batch workflows on Apache Spark and Apache Iceberg over Amazon S3, orchestrated with Apache Airflow.',
+      'Change Data Capture (CDC) and incremental ingestion patterns reliably propagate operational data into downstream analytical platforms, so I work across the full data lifecycle — ingestion, transformation, storage, and analytical serving — supporting data products and reporting workloads that need both low-latency and large-scale historical processing.',
+    ],
+    skillsLabel: 'Stack in use',
+    techStack: [
+      { name: 'OceanBase', logoId: 'oceanbase' },
+      { name: 'StarRocks', logoId: 'starrocks' },
+      { name: 'Kafka', logoId: 'kafka' },
+      { name: 'Apache Flink', logoId: 'flink' },
+      { name: 'Amazon S3', logoId: 's3' },
+      { name: 'Apache Iceberg', logoId: 'iceberg' },
+      { name: 'Spark', logoId: 'spark' },
+      { name: 'Airflow', logoId: 'airflow' },
+    ],
+    tags: ['Vanguard Software', 'Data engineering', 'Streaming & batch'],
+  },
   continual: {
     id: 'continual',
     yearLabel: 'Now',
     title: 'Continual Learning',
     logoId: 'infinity',
     summary:
-      'Currently studying for CFA Level I while building a Market Risk Engine that helps users explore portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting.',
+      'Deep diving into systems design for resilient data pipelines that handle both batch and streaming data.',
     body: [
-      'I am using CFA Level I preparation to strengthen my foundations in financial reporting, portfolio management, ethics, and quantitative methods alongside project work.',
-      'That study track complements my interest in projects that combine data science, financial risk, and engineering to create practical tools for decision-making.',
+      'I am studying how pipelines stay correct and available under real-world failure: durable buffering, ordered processing, retries, dead-letter handling, and keeping raw data as the traceable source behind every derived metric.',
+      'I put these ideas into practice through Usage Observatory, an event-streaming pipeline that captures app usage from my iPhone, processes it through Kafka, and serves session and trend metrics to a live dashboard.',
     ],
-    imageId: 'risk-lab',
-    imageCaption: 'Current portfolio risk lab and market risk engine workbench.',
-    tags: ['CFA Level I', 'Portfolio growth', 'Continual learning'],
+    skillsLabel: 'Stack in use',
+    techStack: [
+      { name: 'Java', logoId: 'java' },
+      { name: 'Spring Boot', logoId: 'springboot' },
+      { name: 'Kafka', logoId: 'kafka' },
+      { name: 'TimescaleDB', logoId: 'timescale' },
+      { name: 'React', logoId: 'react' },
+      { name: 'TypeScript', logoId: 'typescript' },
+    ],
+    imageId: 'usage-pipeline',
+    imageCaption: 'Usage Observatory pipeline: capture, validate, buffer, transform, store, serve, and see.',
+    imageHref: 'https://behavior-dashboard.taildcd567.ts.net/',
+    tags: ['Systems design', 'Batch & streaming', 'Continual learning'],
   },
 }
 
 export const projects: Project[] = [
   {
+    id: 'usage-observatory',
+    title: 'Usage Observatory',
+    category: 'Data Engineering',
+    summary:
+      'An event-streaming pipeline that captures app usage from my iPhone in real time, processes it through Kafka, and serves session and trend metrics to a live dashboard.',
+    focus:
+      'Built the pipeline end to end: an iPhone Shortcut emits OPEN and CLOSE events, a Spring Boot ingestion API validates them, Kafka buffers them, and a stream processor pairs them into sessions and time rollups stored in TimescaleDB.',
+    impact:
+      'Separates the write path from the read path, so ingestion and processing can absorb bursts of events while a dedicated analytics API serves the dashboard from sessions and rollups, with raw events kept as the traceable source behind every metric.',
+    media: [
+      {
+        imageId: 'usage-pipeline',
+        caption: 'Live pipeline view: capture, validate, buffer, transform, store, serve, and see, with a dead-letter topic for failed events.',
+      },
+    ],
+    stack: [
+      { label: 'Java', tone: 'warm' },
+      { label: 'Spring Boot', tone: 'warm' },
+      { label: 'Kafka', tone: 'warm' },
+      'TimescaleDB',
+      'React',
+      'TypeScript',
+    ],
+    highlights: [
+      'Ingestion API checks a collector token and validates a versioned event contract before publishing to Kafka.',
+      'Events are keyed by device so each phone\'s events stay in order in a partitioned, durable log while processing catches up.',
+      'Stream processor pairs opens and closes into sessions and writes events, sessions, and hourly or daily rollups to TimescaleDB.',
+      'Failed events are retried twice and then parked on a dead-letter topic (app-usage-events.dlq.v1) instead of being lost, so valid events keep flowing.',
+    ],
+    links: [{ label: 'Live Dashboard', href: 'https://behavior-dashboard.taildcd567.ts.net/' }],
+  },
+  {
     id: 'market-risk-engine-2-0',
     title: 'Market Risk Engine 2.0',
     category: 'Quantitative Research',
+    archived: true,
     summary:
       'A new iteration of the Market Risk Engine aimed at moving beyond the first Streamlit prototype toward broader market-aware risk calculations and a stronger research foundation.',
     focus:
@@ -275,6 +366,7 @@ export const projects: Project[] = [
     id: 'market-risk-engine',
     title: 'Market Risk Engine 1.0',
     category: 'Quantitative Analytics',
+    archived: true,
     summary:
       'An interactive Streamlit application for exploring portfolio risk through historical VaR, Expected Shortfall, rolling risk metrics, and backtesting diagnostics.',
     statusNote:
@@ -331,6 +423,14 @@ export const projects: Project[] = [
       { label: 'Course Context', href: 'https://alexxthiery.github.io/teaching/teaching.html' },
     ],
   },
+]
+
+export const featuredProjects = projects.filter((project) => !project.archived)
+
+export const heroStats = [
+  { value: featuredProjects.length, suffix: '', label: 'Featured projects' },
+  { value: 4, suffix: '', label: 'Core technical lanes' },
+  { value: 12, suffix: '+', label: 'Tools in rotation' },
 ]
 
 export const skillGroups: SkillGroup[] = [
