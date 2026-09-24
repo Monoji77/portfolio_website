@@ -1,14 +1,32 @@
 import { ArrowUpRight, X } from 'lucide-react'
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import pythonLogo from '../assets/python.png'
+import reactLogo from '../assets/React.png'
 import abcOverlayImage from '../assets/basic_abc_vs_regression_adjusted_overlay.png'
 import marketRisk20Image from '../assets/market_risk_2.0.png'
 import abcPpcImage from '../assets/ppc_all_observables.png'
 import riskLabImage from '../assets/portfolio_risk_lab.png'
-import { projects, type Project } from '../data/portfolio'
+import apacheKafkaLogo from '../assets/stack/apachekafka.svg'
+import javaLogo from '../assets/stack/java.svg'
+import springBootLogo from '../assets/stack/springboot.svg'
+import timescaleLogo from '../assets/stack/timescale.svg'
+import typescriptLogo from '../assets/stack/typescript.svg'
+import usagePipelineImage from '../assets/usage_observatory_pipeline.png'
+import { featuredProjects, type Project } from '../data/portfolio'
 import { SectionHeading } from './SectionHeading'
 import { SectionReveal } from './SectionReveal'
 import { TiltedCard } from './reactbits/TiltedCard'
+
+const stackLogoMap: Record<string, string> = {
+  Java: javaLogo,
+  'Spring Boot': springBootLogo,
+  Kafka: apacheKafkaLogo,
+  TimescaleDB: timescaleLogo,
+  React: reactLogo,
+  TypeScript: typescriptLogo,
+  Python: pythonLogo,
+}
 
 const projectMediaMap = {
   'abc-overlay': {
@@ -27,9 +45,16 @@ const projectMediaMap = {
     alt: 'Market Risk Engine 2.0 interface preview',
     src: marketRisk20Image,
   },
+  'usage-pipeline': {
+    alt: 'Usage Observatory data pipeline from iPhone capture through Kafka and TimescaleDB to the dashboard',
+    src: usagePipelineImage,
+  },
 } as const
 
-const projectOrder = ['market-risk-engine-2-0', 'market-risk-engine', 'abc-inference'] as const
+const projectOrder = ['usage-observatory', 'market-risk-engine-2-0', 'market-risk-engine', 'abc-inference'] as const
+
+// Cycled per card so the row reads as a set of distinct case studies rather than one repeated tone.
+const accentPalette = ['128, 245, 194', '255, 176, 102', '122, 168, 255']
 
 export function FeaturedProjectsSection() {
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null)
@@ -37,7 +62,7 @@ export function FeaturedProjectsSection() {
 
   const orderedProjects = useMemo(
     () =>
-      [...projects].sort((leftProject, rightProject) => {
+      [...featuredProjects].sort((leftProject, rightProject) => {
         const leftIndex = projectOrder.indexOf(leftProject.id as (typeof projectOrder)[number])
         const rightIndex = projectOrder.indexOf(rightProject.id as (typeof projectOrder)[number])
 
@@ -101,11 +126,7 @@ export function FeaturedProjectsSection() {
     <LayoutGroup id="featured-projects">
       <section className="section-band section-band--warm" id="projects">
         <div className="section-inner">
-          <SectionHeading
-            description="A few selected builds that show how I think through modeling, systems, and product-facing clarity."
-            eyebrow="Featured Projects"
-            title="Not just what I built, but how I shaped the work into something usable."
-          />
+          <SectionHeading description="" eyebrow="Featured Projects" title="Selected Projects" />
 
           <div className="projects-section__layout">
             <div className="projects-section__grid">
@@ -113,25 +134,57 @@ export function FeaturedProjectsSection() {
                 const selectedMedia = project.media?.[0] ? projectMediaMap[project.media[0].imageId] : null
 
                 return (
-                  <SectionReveal delay={index * 0.08} key={project.id}>
+                  <SectionReveal delay={index * 0.1} key={project.id}>
                     <button
                       aria-expanded={activeProject?.id === project.id}
                       aria-haspopup="dialog"
                       className="projects-section__card-button"
                       onClick={() => setActiveProjectId(project.id)}
+                      style={
+                        {
+                          '--projects-card-delay': `${index * 0.6}s`,
+                          '--project-accent': accentPalette[index % accentPalette.length],
+                        } as CSSProperties
+                      }
                       type="button"
                     >
                       <motion.div className="projects-section__card-motion" layoutId={`project-card-${project.id}`}>
+                        <span className="projects-section__card-glow" aria-hidden="true" />
                         <TiltedCard className="projects-section__card-shell">
+                          <span className="projects-section__card-accent-bar" aria-hidden="true" />
+                          <span className="projects-section__card-index" aria-hidden="true">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+
                           {selectedMedia ? (
                             <div className="projects-section__card-visual">
                               <img alt={selectedMedia.alt} className="projects-section__card-image" src={selectedMedia.src} />
+                              <span className="projects-section__card-sheen" aria-hidden="true" />
+                              <span className="projects-section__card-category">{project.category}</span>
                             </div>
                           ) : null}
 
                           <div className="projects-section__card-copy">
                             <h3>{project.title}</h3>
                             <p>{project.summary}</p>
+
+                            <ul className="projects-section__card-stack" aria-label={`${project.title} stack`}>
+                              {project.stack.map((item) => {
+                                const label = typeof item === 'string' ? item : item.label
+                                const logo = stackLogoMap[label]
+
+                                return logo ? (
+                                  <li key={label} title={label}>
+                                    <img alt={label} src={logo} />
+                                  </li>
+                                ) : null
+                              })}
+                            </ul>
+
+                            <span className="projects-section__card-cta">
+                              View details
+                              <ArrowUpRight size={16} />
+                            </span>
                           </div>
                         </TiltedCard>
                       </motion.div>
@@ -235,10 +288,21 @@ function ProjectDetailContent({ project }: { project: Project }) {
           <div className={`projects-section__media-grid ${project.media.length > 1 ? 'is-split' : ''}`.trim()}>
             {project.media.map((media) => {
               const image = projectMediaMap[media.imageId]
+              const href = project.id === 'usage-observatory' ? project.links?.[0]?.href : undefined
+              const img = <img alt={image.alt} className="projects-section__media-image" src={image.src} />
 
               return (
                 <figure className="projects-section__media" key={media.imageId}>
-                  <img alt={image.alt} className="projects-section__media-image" src={image.src} />
+                  {href ? (
+                    <a className="projects-section__media-link" href={href} rel="noreferrer" target="_blank">
+                      {img}
+                      <span className="projects-section__media-link-badge">
+                        View live <ArrowUpRight size={14} />
+                      </span>
+                    </a>
+                  ) : (
+                    img
+                  )}
                   <figcaption>{media.caption}</figcaption>
                 </figure>
               )

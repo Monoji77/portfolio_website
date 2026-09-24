@@ -14,7 +14,7 @@
 
 ![Demo](assets/portfolio_demo.gif)
 
-This repository contains the source code for a single-page portfolio website that presents background, selected work, technical skills, current CFA Level I study, and contact information in a structured, polished format.
+This repository contains the source code for a single-page portfolio website that presents background, selected work, technical skills, current work and learning in data pipeline systems design, and contact information in a structured, polished format.
 
 Live site: [chrisyong-portfolio.com](https://chrisyong-portfolio.com/)
 
@@ -36,7 +36,7 @@ Live site: [chrisyong-portfolio.com](https://chrisyong-portfolio.com/)
 
 ## Key Features
 
-- Single-page layout with dedicated sections for introduction, background, current CFA Level I learning focus, featured projects, technical skills, and contact details
+- Single-page layout with dedicated sections for introduction, background, current work and learning focus, featured projects, technical skills, and contact details
 - Scroll-aware navigation and progress feedback for smoother browsing
 - Interactive project showcase with expandable detail views and supporting visuals
 - Animated UI elements, including text reveals, transitions, and a rotating skills carousel

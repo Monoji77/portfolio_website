@@ -12,6 +12,17 @@ import reactLogo from '../assets/React.png'
 import scipyLogo from '../assets/scipy.svg'
 import scikitLogo from '../assets/Scikit.svg'
 import sparkLogo from '../assets/Apache_Spark.png'
+import amazonS3Logo from '../assets/stack/amazons3.svg'
+import apacheAirflowLogo from '../assets/stack/apacheairflow.svg'
+import apacheFlinkLogo from '../assets/stack/apacheflink.svg'
+import apacheKafkaLogo from '../assets/stack/apachekafka.svg'
+import icebergLogo from '../assets/stack/iceberg.png'
+import javaLogo from '../assets/stack/java.svg'
+import oceanbaseLogo from '../assets/stack/oceanbase.png'
+import springBootLogo from '../assets/stack/springboot.svg'
+import starrocksLogo from '../assets/stack/starrocks.png'
+import timescaleLogo from '../assets/stack/timescale.svg'
+import typescriptLogo from '../assets/stack/typescript.svg'
 import streamlitLogo from '../assets/streamlit.png'
 import { SectionHeading } from './SectionHeading'
 import { SectionReveal } from './SectionReveal'
@@ -31,7 +42,18 @@ const skills: SkillLogo[] = [
   { src: sparkLogo, name: 'Apache Spark' },
   { src: pysparkLogo, name: 'PySpark' },
   { src: postgresLogo, name: 'PostgreSQL' },
+  { src: apacheKafkaLogo, name: 'Kafka' },
+  { src: apacheFlinkLogo, name: 'Apache Flink' },
+  { src: apacheAirflowLogo, name: 'Airflow' },
+  { src: icebergLogo, name: 'Apache Iceberg' },
+  { src: amazonS3Logo, name: 'Amazon S3' },
+  { src: oceanbaseLogo, name: 'OceanBase', backdrop: 'white' },
+  { src: starrocksLogo, name: 'StarRocks' },
+  { src: timescaleLogo, name: 'TimescaleDB' },
+  { src: javaLogo, name: 'Java' },
+  { src: springBootLogo, name: 'Spring Boot' },
   { src: reactLogo, name: 'React', backdrop: 'white' },
+  { src: typescriptLogo, name: 'TypeScript' },
   { src: streamlitLogo, name: 'Streamlit', backdrop: 'white' },
   { src: gitLogo, name: 'Git' },
   { src: githubLogo, name: 'GitHub', backdrop: 'white' },
